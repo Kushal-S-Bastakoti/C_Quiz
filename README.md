@@ -21,4 +21,5 @@ C_Quiz Project
   13. If stahe is passed: display message : Yay! Next Stage
   14. If all 3 stage completed: Yay! You are a genius.
   15. And Display list of Which Questions had correct answers and which didn't have 
-
+# Updated Project Details
+  1. There will be 3 different categories.
