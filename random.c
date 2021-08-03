@@ -1,28 +1,48 @@
-// C program to generate random numbers
 #include <stdio.h>
 #include <stdlib.h>
-#include<time.h>
+#include <time.h>
+#include <conio.h>
+
+static int score,score_counter,difficulty,category;
+static char user_name[20];
 
 int*  random_array(); // Generates 15 random numbers
 
 int genetate_correct_answer(int,int);
 void generate_question(int,int); // Generates question for the category
-int category_selection();
-
+void category_selection();
+void difficulty_selection();
+void top_display(int);
 // Driver program
 int main(void)
 {
+	
 	int * question_array;
-	int i,category,score=0,score_counter,q, play_again=1;
+	int i, q, play_again=1;
 	int answer_list[15];
 	int correct_answer[15];
 	
+	//Formatting Color schema
+	
+	system("Color 7D");
+	//The integer is for background color the char is for text color
+	// Note the color schema is os dependednt and is developed for windows system
+	//Code not compatible for other os
+	
+	
 	printf("\n-----------------------------------------------------------------------------------------------\n");
-	printf("Welcome to the Quiz\n");
-	printf("Play on any the categories \n");
-	printf("You have two lives for each level\n");
-	printf("Pass the easy level to play the medium level and pass the mdedium level to play hard level\n\n");
-	printf("\n-----------------------------------------------------------------------------------------------\n");
+	printf("\nWelcome to the Quiz\n");
+	printf("Test your knowledge in the filed of science, sports or general knowledge in mixed format\n");
+	printf("\n\nIf you want to play\n Please Enter your name: ");
+	
+	gets(user_name);
+	system("cls");
+	printf("\n\n\n\n\n\n \t\t\t\t\t\t\tWelcome %s", user_name);
+	getch();
+	
+	
+	printf("\nPlease press enter to proceed");
+	system("cls");
 	
 	
 	
@@ -33,33 +53,31 @@ int main(void)
 		
 		score=0;
 		question_array = random_array();
-		category=category_selection();
+		
+		difficulty_selection();
+		category_selection();
+		
 		
 		//Program to ask 15 questions
 		for (i=0;i<15;i++)
 		{
-			//To check score for every 5 questions- done to simulate level: easy, medium and hard
-			if(i==0){
-				printf("\n-----------------------------------------------------------------------------------------------\n");
-				printf("\nEasy Round begins\n");
-				printf("\n-----------------------------------------------------------------------------------------------\n");
-				score_counter=2; // 2 lives for each level 
+			//To check score for every 5 questions- done to simulate level: easy
+			if(difficulty ==3){
+			
+				if(i==0){
+					score_counter=3; // 3 lives for each level 
+				}
+				else if(i==5){
+					score_counter=3;
+				}
+				else if( i==10){
+					score_counter =3;
+				}
 			}
-			else if(i==5){
-				printf("\n-----------------------------------------------------------------------------------------------\n");
-				printf("\nMedium Round begins\n");
-				printf("\n-----------------------------------------------------------------------------------------------\n");
-				score_counter=2;
-			}
-			else if( i==10){
-				printf("\n-----------------------------------------------------------------------------------------------\n");
-				printf("\nHard Round begins\n");
-				printf("\n-----------------------------------------------------------------------------------------------\n");
-				score_counter =2;
-			}
-		
 			//The random question that is to be asked
 			q= *(question_array +i);
+			
+			top_display(i);
 		
 			//Program that prints the question
 			generate_question(q,category);
@@ -89,10 +107,19 @@ int main(void)
 				printf("\nGame Over\n");
 				printf("\n-----------------------------------------------------------------------------------------------\n");
 				
-				printf("Score :\t %d \n Percentage Completed: %d ", score, (i*100)/15);
+				printf("Score :\t %d \n Percentage Completed: %d \n\n", score, (i*100)/15);
+				
+				getch();
+				printf("Press Enter to continue");
+				
+				system("cls");
 				
 				break;
 			}
+			
+			printf("\n\nPress Enter to Proceed \n\n");
+			getch();
+			system("cls");
 							
 		}
 		
@@ -108,8 +135,10 @@ int main(void)
 			printf("\n-----------------------------------------------------------------------------------------------\n");
 		}
 		
-		printf("Do you want to Play again?\n press 1 if yes \n, 0 if no \n");
+		printf("Do you want to Play again?\n press\n\t 1 if yes, \n\t 0 if no \n");
 		scanf("%d",&play_again);
+		
+		system("cls");
 		
 		
 	}	
@@ -118,6 +147,8 @@ int main(void)
 
 	return 0;
 }
+
+
 
 int * random_array()
 {
@@ -184,19 +215,91 @@ int * random_array()
 	
 }
 
-int category_selection(){
-	int category;
-	printf("\n-----------------------------------------------------------------------------------------------\n");
-	printf("Please eneter the category of quiz you want to answer\n \t1:science\n\t2:Sports\n\t3:Mixed\n");
-	scanf("%d",&category);
-	printf("\n-----------------------------------------------------------------------------------------------\n");
+
+
+void difficulty_selection(){
 	
-	return category;
+	printf("Rules of the game\n\n");
+	printf("3 sets of randomly generated questions will be asked\n\n The sets get harder the more you progress \n\n Please choose the difficulty of game you want to play in\n\n");
+	printf("1: Hard  \t\tYou have one life, answer any question incorrectly and its game over \n\n");
+	printf("2: Normal\t\tYou get 3 lives, answer three questions incorrectly and its game over\n\n");
+	printf("3: Easy  \t\tYou get 3 lives for each set\n\n");
+	
+	while(1)
+	{
+	
+		printf("Please Enter the difficulty level you want to play in: ");
+		scanf("%d",&difficulty);
+		
+		printf("\n\n");
+		if(difficulty == 1){
+			printf("You have chosen Hard\n");
+			score_counter =1;
+			break;
+		}
+		else if(difficulty == 2){
+			printf("You have chosen Normal\n");
+			score_counter =3;
+			break;
+		}
+		else if(difficulty == 3){
+			printf("You have chosen Easy\n");
+			score_counter =3;
+			break;
+		}
+		else{
+			printf("Invalid Input, Please Retry \n");
+			difficulty=2;
+		}
+	
+	}
+	
+	printf("\n\n\n\nPress Enter to Proceed to Category Selection \n");
+	getch();
+	system("cls");
 }
 
 
+
+void category_selection(){
+	while(1)
+	{
+		printf("\n-----------------------------------------------------------------------------------------------\n\n\n");
+		printf("Please eneter the category of quiz you want to answer\n \t1:science\n\t2:Sports\n\t3:Mixed\n\n\n");
+		scanf("%d",&category);
+		
+		system("cls");
+		
+		printf("\n\n\n");
+		if (category == 1){
+			printf("You have chosesn ");
+			printf("Science");
+			break;
+		}
+		else if(category == 2){
+			printf("You have chosesn ");
+			printf("Sports");
+			break;
+		}
+		else if (category == 3){
+			printf("You have chosesn ");
+			printf("Mixed");
+			break;
+		}
+		else{
+			printf("Invalid Input, Retry \n\n");
+		}
+	}
+	printf("\n\n Press Enter to continue \n");
+	getch();
+	system("cls");
+	
+}
+
+
+
 int generate_correct_answer(int question , int c){
-	int cat1[] = {1,2,3};
+	int cat1[] = {1,3,2,2,4,3,3, 4,2,2,3,3,1,1, 4,2,3,4,2,2,1};
 	int cat2[] = {1,4,1,3,1,4,1, 3,2,1,1,1,1,1, 2,1,2,3,1,1,1};
 	int cat3[] = {1,3,1,1,3,1,1, 1,4,1,2,1,3,1, 2,1,2,3,4,2,4};
 	
@@ -207,6 +310,41 @@ int generate_correct_answer(int question , int c){
 	else
 		return cat3[question];
 }
+
+
+
+void top_display(int i){
+	int j;
+	int character = 5;
+	
+	printf("Score: %d\t\t\tUserName : %s", score ,user_name);
+	printf("  \n-----------------------------------------------------------------------------------------------\n\n\n");
+	
+	
+	if(i < 5){
+		printf("Round 1");
+	}
+	else if(i < 10){
+		printf("Round 2");
+	}
+	else{
+		printf("Round 3");
+	}
+	
+	printf("\t\t\t Question no. %d",i+1);
+	
+	printf("\t\t Difficulty: ");
+	(difficulty==1?printf("Hard"):difficulty==2?printf("Normal"):printf("Easy"));
+	
+	printf("\t\tLives: ");
+	for (j=0; j < score_counter; j++){
+		printf(" %c ",character);
+	}
+	
+	printf("\n\n");
+}
+
+
 
 void generate_question(int question, int c)
 {
@@ -219,12 +357,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("What does DNA stand for?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Deoxyribo Nucleic acid ");
+						printf("\t2:Dehrdyoxyribo Negative acid \n");
+						printf("\t3:Dehydratioxyribo Nucleic acid ");
+						printf("\t4:Deoxyribo Negative acid \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -232,12 +370,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("How many bones are in the human body?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:365 ");
+						printf("\t2:406 \n");
+						printf("\t3:206 ");
+						printf("\t4:160 \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -245,12 +383,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("The concept of gravity was discovered by which famous physicist?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Albert Einstein ");
+						printf("\t2:Sir Isaac Newton \n");
+						printf("\t3:Marie Curie ");
+						printf("\t4:Galileo Galilei \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -258,12 +396,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("What is the hardest natural substance on Earth?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Plastic ");
+						printf("\t2:Diamond \n");
+						printf("\t3:Graphene ");
+						printf("\t4:Steel \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -271,12 +409,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("Which is the main gas that makes up the Earth?s atmosphere?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:oxygen ");
+						printf("\t2:hydrogen \n");
+						printf("\t3:carbondioxide ");
+						printf("\t4:nitrogen \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -284,12 +422,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("At what temperature are Celsius and Fahrenheit equal?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:40 ");
+						printf("\t2:30 \n");
+						printf("\t3:-40 ");
+						printf("\t4:-30 \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -297,12 +435,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("What is the biggest planet in our solar system?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Pluto ");
+						printf("\t2:Earth \n");
+						printf("\t3:Jupiter ");
+						printf("\t4:Saturn \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -310,12 +448,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("What is given to wood whose normal cells have been replaced with mineral deposits?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Soft wood");
+						printf("\t2:Hard wood \n");
+						printf("\t3:Zombie wood ");
+						printf("\t4:Petrified wood \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -323,12 +461,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("Pollination by birds is called: ");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:autogamy ");
+						printf("\t2:ornithophily \n");
+						printf("\t3:entomophily ");
+						printf("\t4:anemophily \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -336,12 +474,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("Unlike rodents, the rabbit has how many incisor teeth?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:3 ");
+						printf("\t2:4 \n");
+						printf("\t3:5 ");
+						printf("\t4:6 \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -349,12 +487,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("What percent of fire-related deaths are due to smoke inhalation rather than burns?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:10%% ");
+						printf("\t2:50%% \n");
+						printf("\t3:80%% ");
+						printf("\t4:99%% \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -362,12 +500,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("To what familiar fruit is the plantain similar?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Apple ");
+						printf("\t2:Orange \n");
+						printf("\t3:Banana ");
+						printf("\t4:Grape \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -375,12 +513,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("How many men have walked on the moon?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:12 ");
+						printf("\t2:21 \n");
+						printf("\t3:19 ");
+						printf("\t4:91 \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -388,12 +526,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("The fastest-running terrestrial animal is:");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:cheetah ");
+						printf("\t2:lion \n");
+						printf("\t3:man ");
+						printf("\t4:jaguar \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -401,12 +539,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("In what country do the greatest number of tornadoes occur? ");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Chile ");
+						printf("\t2:Japan \n");
+						printf("\t3:Mexico ");
+						printf("\t4:US \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -414,12 +552,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("What wonder drug was used for three years by the Army and Navy before becoming available to the general public in 1944?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Aspirin ");
+						printf("\t2:Penicilin \n");
+						printf("\t3:Cocaone ");
+						printf("\t4:Paracetamol \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -427,12 +565,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("Which sea is the saltiest natural lake and is also at the lowest elevation on the face of the earth? ");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Black sea ");
+						printf("\t2:Caspian sea \n");
+						printf("\t3:Dead sea ");
+						printf("\t4:Mariana trench \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -440,12 +578,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("The scarab, worshipped by the Egyptians, is what type of beetle?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Scrap beetle ");
+						printf("\t2:Stag beetle \n");
+						printf("\t3:Sting beetle ");
+						printf("\t4:Dung beetle \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -453,12 +591,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf(".As you go down into a well, your weight:");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:increases slightly  ");
+						printf("\t2:decreases slightly \n");
+						printf("\t3:remains exactly the same  ");
+						printf("\t4:becomes zero \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -466,12 +604,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("The cloud at ground level is called what? ");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Dew ");
+						printf("\t2:Fog \n");
+						printf("\t3:Altocumulus ");
+						printf("\t4:Shelf cloud \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}
@@ -479,12 +617,12 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("");
+						printf("Name the disease of plant in which large yellow spot appears on the leaves?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: ");
-						printf("\t2: \n");
-						printf("\t3: ");
-						printf("\t4: \n");
+						printf("\t1:Bacterial Blight ");
+						printf("\t2:Bacterial Spot \n");
+						printf("\t3:Aphids ");
+						printf("\t4:Botrytis \n");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						break;
 					}	
@@ -614,7 +752,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("Which sports’ Japanese version is “hanetsuki”?");
+						printf("Which sports? Japanese version is ?hanetsuki??");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Badminton");
 						printf("\t2: Polo\n");
@@ -653,7 +791,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("Who is he first manager who first named David beckham as england’s captain?");
+						printf("Who is he first manager who first named David beckham as england?s captain?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Peter taylor");
 						printf("\t2: Sam allardye\n");
@@ -692,7 +830,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("he word “agricultural shot” is known to be used sometimes in which sports?");
+						printf("he word ?agricultural shot? is known to be used sometimes in which sports?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Cricket");
 						printf("\t2: Hockey\n");
@@ -705,7 +843,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("Who won the Australian open 2020 men’s singles title?");
+						printf("Who won the Australian open 2020 men?s singles title?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Rafel nadal");
 						printf("\t2: Novak Djokovic\n");
@@ -718,7 +856,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("World’s highest polo ground is in");
+						printf("World?s highest polo ground is in");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Kasur");
 						printf("\t2: Attock\n");
@@ -744,7 +882,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("In which wc did diego Maradona score his infamous ‘hand of god’ goal?");
+						printf("In which wc did diego Maradona score his infamous ?hand of god? goal?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Mexico 1986");
 						printf("\t2: Spain 1982\n");
@@ -840,7 +978,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("What is Scooby Doo’s full name?");
+						printf("What is Scooby Doo?s full name?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Scoobert Doo");
 						printf("\t2: Scooby Dooby Doo\n");
@@ -868,7 +1006,7 @@ void generate_question(int question, int c)
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("What does NAZI stands for?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("\t1: National Socialist German Worker’s Party");
+						printf("\t1: National Socialist German Worker?s Party");
 						printf("\t2: National Capitalist German Capital Party\n");
 						printf("\t3: National Human Rights Violation Party");
 						printf("\t4: Deutsche National Communist Party\n");
@@ -879,7 +1017,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("What is rhino’s horn made up of?");
+						printf("What is rhino?s horn made up of?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Steel");
 						printf("\t2: Nail\n");
@@ -892,7 +1030,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("What’s a baby rabbit called?");
+						printf("What?s a baby rabbit called?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Kitten");
 						printf("\t2: Hares\n");
@@ -931,7 +1069,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("What animal can’t stick out it’s tongue?");
+						printf("What animal can?t stick out it?s tongue?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Rabbit");
 						printf("\t2: Duck\n");
@@ -944,7 +1082,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("Which color is Girrafe’s tongue?");
+						printf("Which color is Girrafe?s tongue?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Blue-black");
 						printf("\t2: Red\n");
@@ -957,7 +1095,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("What is opposite of Déjà vu?");
+						printf("What is opposite of DÃ©jÃ  vu?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Treja-Vu");
 						printf("\t2: Jamais-Vu\n");
@@ -983,7 +1121,7 @@ void generate_question(int question, int c)
 					{
 						
 						printf("\n-----------------------------------------------------------------------------------------------\n");
-						printf("What is Joe Biden’s middle name?");
+						printf("What is Joe Biden?s middle name?");
 						printf("\n-----------------------------------------------------------------------------------------------\n");
 						printf("\t1: Robertte");
 						printf("\t2: Robinette\n");
@@ -1051,3 +1189,8 @@ void generate_question(int question, int c)
 	}
 	
 }
+
+
+
+
+
